@@ -220,7 +220,7 @@ class DepositProcessingThread1 extends Thread {
     }
 
     public void run() {
-        for (int i = 0; i < 500; i++) {
+        for (int i = 0; i < 250; i++) {
             String AccountNumber = DepositTransactions[i].getAccountNumber();
             int amount = DepositTransactions[i].getAmount();
             for (int j = 0; j < 30; j++) {
@@ -252,7 +252,7 @@ class DepositProcessingThread2 extends Thread {
     }
 
     public void run() {
-        for (int i = 0; i < 500; i++) {
+        for (int i = 0; i < 250; i++) {
             String AccountNumber = DepositTransactions[i].getAccountNumber();
             int amount = DepositTransactions[i].getAmount();
             for (int j = 0; j < 30; j++) {
@@ -284,7 +284,7 @@ class WithdrawProcessingThread1 extends Thread {
     }
 
     public void run() {
-        for (int i = 0; i < 500; i++) {
+        for (int i = 0; i < 250; i++) {
             String AccountNumber = WithdrawTransactions[i].getAccountNumber();
             int amount = WithdrawTransactions[i].getAmount();
             for (int j = 0; j < 30; j++) {
@@ -316,7 +316,7 @@ class WithdrawProcessingThread2 extends Thread {
     }
 
     public void run() {
-        for (int i = 0; i < 500; i++) {
+        for (int i = 0; i < 250; i++) {
             String AccountNumber = WithdrawTransactions[i].getAccountNumber();
             int amount = WithdrawTransactions[i].getAmount();
             for (int j = 0; j < 30; j++) {
@@ -349,11 +349,15 @@ public class Roll_30 {
         }
 
         Account[] accounts = accountGenerationThread.accounts;
+        System.out.println("Account Holder | Name Account Number | Maximum Transaction Limit");
+        for( int i = 0; i < 30; i++) {
+            System.out.println(accounts[i].getAccountHolderName() + " " + accounts[i].getAccountNumber() + " " + accounts[i].getMaximumTransactionLimit());
+        }
 
         DepositGenerationThread depositGenerationThread = new DepositGenerationThread(accounts);
-        depositGenerationThread.start();
-
         WithdrawGenerationThread withdrawGenerationThread = new WithdrawGenerationThread(accounts);
+
+        depositGenerationThread.start();
         withdrawGenerationThread.start();
 
         try {
@@ -363,13 +367,15 @@ public class Roll_30 {
             e.printStackTrace();
         }
 
-        // for (int i = 0; i < 500; i++) {
-        // System.out.println(depositGenerationThread.DepositTransactions[i].getAccountNumber() + " " + depositGenerationThread.DepositTransactions[i].getAmount());
-        // }
+        System.out.println("Deposit Transactions");
+        for (int i = 0; i < 500; i++) {
+        System.out.println(depositGenerationThread.DepositTransactions[i].getAccountNumber() + " " + depositGenerationThread.DepositTransactions[i].getAmount());
+        }
 
-        // for (int i = 0; i < 500; i++) {
-        // System.out.println(withdrawGenerationThread.WithdrawTransactions[i].getAccountNumber() + " " + withdrawGenerationThread.WithdrawTransactions[i].getAmount());
-        // }
+        System.out.println("Withdraw Transactions");
+        for (int i = 0; i < 500; i++) {
+        System.out.println(withdrawGenerationThread.WithdrawTransactions[i].getAccountNumber() + " " + withdrawGenerationThread.WithdrawTransactions[i].getAmount());
+        }
         
         transaction[] DepositTransactions = depositGenerationThread.DepositTransactions;
         transaction[] WithdrawTransactions = withdrawGenerationThread.WithdrawTransactions;
@@ -407,5 +413,9 @@ public class Roll_30 {
         WithdrawProcessingThread2 withdrawProcessingThread2 = new WithdrawProcessingThread2(accounts,
                 WithdrawTransactions2);
         
+        depositProcessingThread1.start();
+        depositProcessingThread2.start();
+        withdrawProcessingThread1.start();
+        withdrawProcessingThread2.start();
     }
 }
